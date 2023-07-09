@@ -16,7 +16,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -26,8 +25,9 @@ SECRET_KEY = 'django-insecure-57yvapp(9$ioem%5fu%wa3^t-*a0i^rdgl#uy*f(kl4&tg+l%-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+# 这个是一个安全机制  允许我们以什么形式(域名/ip)来访问后端
+# 默认是 127.0.0.1
+ALLOWED_HOSTS = ['www.meiduo.site', '127.0.0.1']
 
 # Application definition
 
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'apps.users',
 
 ]
 
@@ -55,8 +56,8 @@ ROOT_URLCONF = 'meiduo_mail.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.jinja2.Jinja2',        # 修改一
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],              # 修改二
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',  # 修改一
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # 修改二
         'APP_DIRS': True,
         'OPTIONS': {
             # 修改三：补充Jinja2模板引擎环境
@@ -85,14 +86,14 @@ TEMPLATES = [
 ]
 
 CACHES = {
-    "default": { # 默认
+    "default": {  # 默认
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
-    "session": { # session
+    "session": {  # session
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
@@ -104,7 +105,6 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "session"
 
 WSGI_APPLICATION = 'meiduo_mail.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -118,16 +118,14 @@ WSGI_APPLICATION = 'meiduo_mail.wsgi.application'
 # }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', # 数据库引擎
-        'HOST': '127.0.0.1',                  # 数据库主机
-        'PORT': 3306,                         # 数据库端口
-        'USER': 'root',                     # 数据库用户名
-        'PASSWORD': '1',                      # 数据库用户密码
-        'NAME': 'meiduo_mail'                 # 数据库名字
+        'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
+        'HOST': '127.0.0.1',  # 数据库主机
+        'PORT': 3306,  # 数据库端口
+        'USER': 'root',  # 数据库用户名
+        'PASSWORD': '1',  # 数据库用户密码
+        'NAME': 'meiduo_mail'  # 数据库名字
     },
 }
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -147,7 +145,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -161,7 +158,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -169,7 +165,7 @@ STATIC_URL = '/static/'
 
 # 告知系统去哪里 查找静态文件
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,'static'),
+    os.path.join(BASE_DIR, 'static'),
 ]
 
 # Default primary key field type
@@ -217,4 +213,3 @@ LOGGING = {
         },
     }
 }
-
