@@ -50,5 +50,5 @@ def log(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('log/', log),
-    path('', include('apps.users.urls', namespace='users')),
+    path('', include(('apps.users.urls', 'apps.users'), namespace='users')),
 ]
