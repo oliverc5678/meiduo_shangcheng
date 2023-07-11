@@ -30,10 +30,10 @@ class RegisterView(View):
         return render(request,'register.html')
 
 
-    # def post(self,request):
-    #     """
-    #     1.接收前端提交的用户名,密码和手机号
-    #     2.入库
-    #     3.返回相应
-    #     """
-    #     pass
+    def post(self,request):
+        """
+        1.接收前端提交的用户名,密码和手机号
+        2.入库-----必须得有模型（转移思路）
+        3.返回相应
+        """
+        pass
