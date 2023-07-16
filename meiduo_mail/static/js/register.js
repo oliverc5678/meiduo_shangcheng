@@ -58,6 +58,7 @@ var vm = new Vue({
         },
         // 检查用户名
         check_username: function () {
+            // alert('验证用户名');
             var re = /^[a-zA-Z0-9_-]{5,20}$/;
             if (re.test(this.username)) {
                 this.error_name = false;

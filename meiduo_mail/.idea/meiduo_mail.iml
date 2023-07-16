@@ -22,6 +22,6 @@
     <option name="myDocStringFormat" value="Plain" />
   </component>
   <component name="TemplatesService">
-    <option name="TEMPLATE_CONFIGURATION" value="Django" />
+    <option name="TEMPLATE_CONFIGURATION" value="Jinja2" />
   </component>
 </module>
