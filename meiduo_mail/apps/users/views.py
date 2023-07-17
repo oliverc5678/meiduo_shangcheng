@@ -1,14 +1,28 @@
 import http.client
 import re
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
+from django.urls import reverse
 from django.views import View
 from apps.users.models import User
 from django.http import HttpResponseBadRequest
 from django.http import HttpResponse
+import logging
 
+logger = logging.getLogger('django')
+"""
+断点的优势:
+    1.可以查看我们的方法是否被调用了
+    2.可以查看程序在运行过程中的数据
+    3.查看程序的执行顺序是否和预期的一致
+
+断点如何添加:
+    0.不要在属性,类上加断点
+    1.在函数(方法)的入口处
+    2.在需要验证的地方添加
+"""
 class RegisterView(View):
     """
     1.用户名我们需要判断是否重复(这个要开发一个视图)
@@ -70,9 +84,15 @@ class RegisterView(View):
             # 2.5 判断手机号是否符合规则
         if not re.match(r'^1[3456789]\d{9}$', mobile):
             return HttpResponseBadRequest('手机号不符合规则')
+            # 2.6 验证是否同意协议是否勾选
         # 3.入库-----验证数据没问题才入库
         # User.objects.create 直接入库，理论是没问题的，但是，密码是明文
-        user = User.objects.create_user(username=username, password=password, mobile=mobile)
-        # 4.返回响应
-        # return http.HttpResponse('注册成功')
-        return HttpResponse('注册成功')
+        try:
+            user = User.objects.create_user(username=username,password=password,mobile=mobile)
+        except Exception as e:
+            logger.error(e)
+            return render(request,'register.html',context={'error_message':'数据库异常'})
+            return http.HttpResponseBadRequest('数据库异常')
+        # 4.返回响应，跳转到首页
+        # return HttpResponse('注册成功')
+        return redirect(reverse('contents:index'))

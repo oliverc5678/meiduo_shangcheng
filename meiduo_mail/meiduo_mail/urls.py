@@ -51,4 +51,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('log/', log),
     path('', include(('apps.users.urls', 'apps.users'), namespace='users')),
+    path('', include(('apps.contents.urls', 'apps.contents'), namespace='contents')),
 ]
