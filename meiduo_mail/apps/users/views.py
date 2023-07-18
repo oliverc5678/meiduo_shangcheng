@@ -2,7 +2,7 @@ import http.client
 import re
 
 from django.shortcuts import render, redirect
-
+from django.http import JsonResponse
 # Create your views here.
 from django.urls import reverse
 from django.views import View
@@ -106,3 +106,61 @@ class RegisterView(View):
         login(request, user)
         # return HttpResponse('注册成功')
         return redirect(reverse('contents:index'))
+"""
+一 把需求写下来 (前端需要收集什么 后端需要做什么)
+
+二 把大体思路写下来(后端的大体思路)
+
+三 把详细思路完善一下(纯后端)
+
+四 确定我们请求方式和路由
+
+
+一 把需求写下来 (前端需要收集什么 后端需要做什么)
+    当用户把用户名写完成之后,前端应该收集用户名信息, 传递给后端
+    后端需要验证 用户名是否重复
+二 把大体思路写下来(后端的大体思路)
+        前端: 失去焦点之后,发送一个ajax 请求 这个请求包含 用户名
+        后端:  接收数据 , 查询用户名
+三 把详细思路完善一下
+        1. 接收用户名
+        2. 查询数据库,通过查询记录的count来判断是否重复 0表示没有重复 1表示重复
+四 确定我们请求方式和路由
+        敏感数据 推荐使用POST
+
+        GET     usernames/?username=xxxx
+
+        GET     usernames/xxxx/count/  v
+"""
+# class UsernameCountView(View):
+#     def get(self,request,username):
+#
+#         # 1. 接收用户名
+#
+#         # 2. 查询数据库,通过查询记录的count来判断是否重复 0表示没有重复 1表示重复
+#         try:
+#             count = User.objects.filter(username=username).count()
+#         except Exception as e:
+#             logger.error(e)
+#             return JsonResponse({'code': 400, 'errmsg': '数据库异常'})
+#         # 3.返回相应
+#         return JsonResponse({'code': 0, 'count': count})
+
+
+class UsernameCountView(View):
+    def get(self, request, username):
+        # 验证用户名是否满足正则表达式要求
+        if re.match(r'^[a-zA-Z0-9_]{5,20}$', username):
+            # 处理满足要求的用户名
+            try:
+                count = User.objects.filter(username=username).count()
+            except Exception as e:
+                logger.error(e)
+                return JsonResponse({'code': 400, 'errmsg': '数据库异常'})
+            # 3.返回相应
+            return JsonResponse({'code': 0, 'count': count})
+            # return JsonResponse({"message": "Valid username"})
+
+        else:
+            # 处理不满足要求的用户名
+            return JsonResponse({'code': 400, 'errmsg': '用户名规则异常'})
