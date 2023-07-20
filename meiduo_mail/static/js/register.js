@@ -66,7 +66,23 @@ var vm = new Vue({
                 this.error_name_message = '请输入5-20个字符的用户名';
                 this.error_name = true;
             }
-
+        // 在这里发送一个axios请求
+        // 1、组织url
+            let url = '/usernames/' + this.username + '/count/'
+        // 2、发送请求
+            axios
+                .get(url)
+                        // 3、请求成功的回调的业务逻辑
+                .then(response=>{
+                    // console.log(response)
+                    if(response.data.count == 0){
+                        this.error_name=false
+                    }else {
+                        this.error_name=true;
+                        this.error_name_message='用户已注册';
+                    }
+                })
+                .catch(error=>{})
 
         },
         // 检查密码
