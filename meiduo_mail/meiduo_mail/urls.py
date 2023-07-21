@@ -52,4 +52,5 @@ urlpatterns = [
     # path('log/', log),
     path('', include(('apps.users.urls', 'apps.users'), namespace='users')),
     path('', include(('apps.contents.urls', 'apps.contents'), namespace='contents')),
+    path('', include(('apps.verifications.urls', 'apps.verifications'), namespace='verifications')),
 ]
